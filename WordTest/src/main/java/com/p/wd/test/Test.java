@@ -71,7 +71,7 @@ public class Test {
 				if (mapValueForKey != null && !mapValueForKey.trim().equalsIgnoreCase("")) {
 					String[] strarr = mapValueForKey.trim().split("-->");
 					for (String str : strarr) {
-						premWord.addExample(str);
+						premWord.addMeaning(str);
 					}
 
 				}
@@ -81,7 +81,7 @@ public class Test {
 				if (mapValueForKey != null && !mapValueForKey.trim().equalsIgnoreCase("")) {
 					String[] strarr = mapValueForKey.trim().split("-->");
 					for (String str : strarr) {
-						premWord.addMeaning(str);
+						premWord.addExample(str);
 					}
 				}
 				// out.println(premWord);
