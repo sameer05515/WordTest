@@ -26,8 +26,9 @@ public class Test {
 		List<com.p.wd.test.Wordi> words=null;
 		
 		try {
-			PrintStream ps = new PrintStream(new File("C:/Users/rim jhim/Desktop/p.txt"));
+			PrintStream ps = new PrintStream(new File("C:/Users/Lenovo/Desktop/p.txt"));
 			XMLUtilityImpl xmlUtilityImpl = new XMLUtilityImpl();
+			//xmlUtilityImpl.
 			List<HashMap<String, String>> list = xmlUtilityImpl.getAllDescription();
 
 			words=method3(ps, list, xmlUtilityImpl);
