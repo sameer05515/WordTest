@@ -4,17 +4,19 @@ package com.p.wd.test;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.p.wd.test.Test;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 
 //import org.springframework.context.support.GenericXmlApplicationContext;
@@ -27,7 +29,7 @@ public class App {
 
 	public static void main(String[] args) {
 		
-		insertIntialValues();
+		insertIntialValues2("C:\\Users\\premendra.kumar\\git\\WordTest\\WordTest\\src\\main\\resources\\words.json");
 //
 //
 //		try {
@@ -62,6 +64,81 @@ public class App {
 //			e.printStackTrace();
 //		} 
 //	
+	}
+	
+	
+//	private static void insertWords(String filePath) {
+//		
+//		
+//		String content = "";
+//		try {
+//			content = new String(Files.readAllBytes(Paths.get(filePath)));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//		Type type = new TypeToken<List<Topic>>() {
+//		}.getType();
+//		List<Wordi> fromJson = gson.fromJson(content, type);
+//
+//		for (Wordi task : fromJson) {
+//			System.out.println(task.getId() + " , ");
+//			try {
+//				DAOFactory.getTopicSessionInterface().create(task);
+//			} catch (RestServiceException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+	
+	
+	private static void insertIntialValues2(String filePath){
+
+
+		try {
+			// For XML
+			ApplicationContext ctx = new GenericXmlApplicationContext("spring.xml");
+
+			// For Annotation
+//		ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
+			MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
+			
+//			List<Wordi> words= Test.getAllWords();
+			
+			
+			////////////////
+			String content = "";
+			try {
+				content = new String(Files.readAllBytes(Paths.get(filePath)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			Type type = new TypeToken<List<Wordi>>() {
+			}.getType();
+			List<Wordi> words = gson.fromJson(content, type);
+			//////////////////
+			
+			System.out.println(words.size());
+			
+			for(Wordi w:words){
+				
+				System.out.println(w);
+				
+				ObjectMapper mapper = new ObjectMapper();
+				StringWriter stringEmp = new StringWriter();
+				mapper.writeValue(stringEmp, w);
+				
+				w.setId(null);
+//			mongoOperation.insert(wt,PERSON_COLLECTION);
+				mongoOperation.insert(w);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	
 	}
 
 	private static void insertIntialValues(){
